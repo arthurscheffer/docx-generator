@@ -10,7 +10,7 @@ const upload = multer(); // Pour traiter les formulaires de type multipart/form-
 app.get('/', (req, res) => {
     res.send('Le service est en marche !');
   });
-  
+
 // Route POST pour générer le document
 app.post('/generate', upload.single('template'), (req, res) => {
   try {
@@ -44,9 +44,14 @@ app.post('/generate', upload.single('template'), (req, res) => {
     // Envoyer le document généré
     res.send(buf);
   } catch (error) {
-    console.error('Erreur lors de la génération du document :', error);
-    res.status(500).send({ error: error.message });
+  // Loggez les détails des erreurs multiples pour aider au débogage
+  console.error('Erreur lors de la génération du document :', error.message);
+  if (error.properties && error.properties.errors instanceof Array) {
+    console.error('Détails des erreurs :', error.properties.errors);
   }
+  res.status(500).send({ error: error.message });
+}
+
 });
 
 // Lancer le service sur le port 3000 (modifiable si besoin)
