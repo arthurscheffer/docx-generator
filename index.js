@@ -6,6 +6,11 @@ const Docxtemplater = require('docxtemplater');
 const app = express();
 const upload = multer(); // Pour traiter les formulaires de type multipart/form-data
 
+// Route GET pour vérifier que le service fonctionne
+app.get('/', (req, res) => {
+    res.send('Le service est en marche !');
+  });
+  
 // Route POST pour générer le document
 app.post('/generate', upload.single('template'), (req, res) => {
   try {
